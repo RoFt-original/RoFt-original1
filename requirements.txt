@@ -1,0 +1,2 @@
+tgradish>=1.0.4
+rembg>=2.0.57
