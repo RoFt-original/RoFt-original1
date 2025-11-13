@@ -1,0 +1,34 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build bundle
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+          ./scripts/build_windows_exe.ps1 -Python python
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tg-sticker-maker-windows
+          path: |
+            tg-sticker-maker-windows.zip
+            windows-bundle/
